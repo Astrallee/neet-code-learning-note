@@ -1,4 +1,6 @@
-# Day1   Arrays and Hashing
+
+
+# Day1   
 
 ## 题目  1  ：Contains Duplicate
 
@@ -111,5 +113,64 @@ def isAnagram(s, t):
 
 另外一个小点：Python 的 `sorted()` 返回的是 list，不会修改原字符串，因为字符串不可变。
 
-## 题目  3  ：Valid Anagram\(异位词 / 字母重排\)
+
+
+## 题目  3  ：Two Sum
+
+Given an array of integers `nums` and an integer `target`, return the indices `i` and `j` such that `nums[i] + nums[j] == target` and `i != j`\.
+
+You may assume that *every* input has exactly one pair of indices `i` and `j` that satisfy the condition\.
+
+Return the answer with the smaller index first\.
+
+**思路：**题目说可以解析每一个输入都恰好存在一对，那么边界问题（比如数组只有一个数）就可以暂时不考虑。
+
+那么就是遍历这个数组？ 比如 i， 那么就看target\-nums\[i\]在不在剩余的 nums\[i:\]里面。在的话就返回对应索引。
+
+```Plain Text
+for index in range(0,len(nums)):
+    value = target - nums[index]
+    if value in nums[index+1:]:
+        second_index = nums[index+1:].index(value) + index +1
+        return [index,second_index]
+```
+
+**解析：**
+
+思路**正确**，是暴力优化版。但是有优化问题，if value in nums\[index\+1:\] 切片会创建新数组，O\(n\)。
+
+nums\[index\+1:\]\.index\(value\) 又遍历一次，O\(n\)。  整体时间复杂度是 O\(n²\) 。更好的方案是用 hash 表。
+
+不去找当前数字需要的另一个数字，而是遍历的时候记住之前有哪些数字，位置在哪。
+
+比如：nums=\[2,7,11,15\]   target=9
+
+遍历 2：  9\-2=7  之前没有 就记录 \{2:0\},
+
+遍历到7 ，9\-7=2，查一下 2 在没在，发现2在记录里。 返回\[0,1\]。
+
+比如： nums = \[4,5,6\], target = 10
+
+遍历 4： 10\-4=6 ，啥也没有 记录\{4:0\}
+
+遍历5： 10\-5 = 5，没有 记录\{5:1\}
+
+遍历6： 10\-6 = 4，发现4 ，返回\[0,2\]
+
+```Plain Text
+seen = {}
+for i,num in enumerate(nums):
+    need = target - num
+    if need in seen:
+        return [seen[need],i]
+    seen[num]=i
+```
+
+
+
+
+
+
+
+
 
