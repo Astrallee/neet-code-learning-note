@@ -237,25 +237,37 @@ Output: false
 
 ```Plain Text
 # 先写出来 重复数字的
-def contain_duplicat(nums):
-    seen = set()
-    for item in nums:
-        if item in seen:
-            return True
-        seen.add(item)
-    return False
 def isValidSudoku(self, board: List[List[str]]) -> bool:
-    length = len(board[0])
-    # 验证 某一行
-    result_bool  = False
-    for i, row in enumerate(board):
-        result_bool = contain_duplicat(row )
-        if result_bool :
-            return False
-    # 验证 某一列
-    for j in range(0,length ):
-        col = [board[i][j] for i in range(0,length)]
-        if contain_duplicat(col ):
-            return False
+    rows = [set() for _ in range(9)]
+    cols = [set() for _ in range(9)]
+    boxes = [set() for _ in range(9)]
+
+    for r in range(9):
+        for c in range(9):
+            num = board[r][c]
+
+            # 空格跳过
+            if num == ".":
+                continue
+
+            # 当前3x3区域编号
+            box_id = (r // 3) * 3 + (c // 3)
+
+            # 检查重复
+            if num in rows[r]:
+                return False
+
+            if num in cols[c]:
+                return False
+
+            if num in boxes[box_id]:
+                return False
+
+            # 加入记录
+            rows[r].add(num)
+            cols[c].add(num)
+            boxes[box_id].add(num)
+
+    return True
 ```
 
