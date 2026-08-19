@@ -186,7 +186,7 @@ Note: A board does not need to be full or be solvable to be valid\.
 
 **Example 1:**
 
-![image\.png](图片和附件/image.png)
+![image\.png](../图片和附件/day_3_ti_2.png)
 
 ```Java
 Input: 
